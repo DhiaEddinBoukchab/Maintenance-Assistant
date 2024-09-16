@@ -1,0 +1,39 @@
+
+
+services:
+  app:
+        build: ./
+        command: streamlit run Streamlit/app.py --server.port 8501
+        volumes:
+            - ./:/usr/src/app
+        ports:
+            - 8500:8501
+        image: yourstreamlitapp:latest
+        env_file:
+          .env
+  #db:
+      #image: mysql
+      #environment:
+      #  MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+     # restart: always  
+      #command: mysqld --init-file="/data/application/init.sql"
+     # volumes: 
+       # - ./database/init.sql:/data/application/init.sql
+  #phpmyadmin:
+      #image: phpmyadmin
+     # restart: always
+     # ports:
+      #  - 8082:80
+     # environment:
+       # - PMA_ARBITRARY=1      
+  chroma:
+      image: ghcr.io/chroma-core/chroma:latest
+      volumes:
+        - index_data:/chroma/.chroma/index
+      ports:
+        - 8001:8000
+volumes:
+    index_data:
+      driver: local
+    backups:
+      driver: local
